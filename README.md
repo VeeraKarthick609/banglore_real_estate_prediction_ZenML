@@ -43,7 +43,7 @@ zenml stack register mlflow_stack -a default -o default -d mlflow -e mlflow_trac
 
 ## 📙 Resources & References
 
-If you'd like to watch the video that explains the project, you can watch the [video](https://youtu.be/L3_pFTlF9EQ](https://youtu.be/dPmH3G9NQtY?si=35Q4XUB02ZN-5jyq)).
+If you'd like to watch the video that explains the project, you can watch the [video](https://youtu.be/dPmH3G9NQtY?si=35Q4XUB02ZN-5jyq)).
 
 ### Training Pipeline
 
