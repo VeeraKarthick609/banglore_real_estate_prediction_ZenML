@@ -9,29 +9,15 @@ from run_deployment import run_deployment
 
 
 def main():
-    st.title("End to End Customer Satisfaction Pipeline with ZenML")
-
-    high_level_image = Image.open("_assets/high_level_overview.png")
-    st.image(high_level_image, caption="High Level Pipeline")
-
-    whole_pipeline_image = Image.open("_assets/training_and_deployment_pipeline_updated.png")
 
     st.markdown(
         """ 
     #### Problem Statement 
-     The objective here is to predict the customer satisfaction score for a given order based on features like order status, price, payment, etc. I will be using [ZenML](https://zenml.io/) to build a production-ready pipeline to predict the customer satisfaction score for the next order or purchase.    """
-    )
-    st.image(whole_pipeline_image, caption="Whole Pipeline")
-    st.markdown(
-        """ 
-    Above is a figure of the whole pipeline, we first ingest the data, clean it, train the model, and evaluate the model, and if data source changes or any hyperparameter values changes, deployment will be triggered, and (re) trains the model and if the model meets minimum accuracy requirement, the model will be deployed.
-    """
-    )
+    This project aims to predict house prices in Bangalore using machine learning. """    )
 
     st.markdown(
         """ 
-    #### Description of Features 
-    This app is designed to predict the customer satisfaction score for a given customer. You can input the features of the product listed below and get the customer satisfaction score. 
+    #### 
     | Models        | Description   | 
     | ------------- | -     | 
     | Location | Location of the property | 
@@ -70,7 +56,7 @@ def main():
         input_data[loc_index] = 1
         pred = service.predict(np.array_str(input_data))
         st.success(
-            "Your Customer Satisfactory rate(range between 0 - 5) with given product details is :-{}".format(
+            "Predicted price:-{}".format(
                 pred
             )
         )
