@@ -1,5 +1,6 @@
 from pipelines.deployment_pipeline import (
-    continous_deployment_pipeline,
+    continuous_deployment_pipeline,
+    inference_pipeline,
     #inference_pipeline,
 )
 
@@ -31,7 +32,7 @@ DEPLOY_AND_PREDICT = "deploy_and_predict"
     "(`deploy_and_predict`).",
 )
 @click.option(
-    "--min-accuracy", default=0.9, help="Minimum accuracy to deploy the model"
+    "--min-accuracy", default=0.85, help="Minimum accuracy to deploy the model"
 )
 def run_deployment(config: str, min_accuracy: float):
     mlflow_model_deployer_component = MLFlowModelDeployer.get_active_model_deployer()
@@ -40,9 +41,10 @@ def run_deployment(config: str, min_accuracy: float):
     predict = config = PREDICT or config == DEPLOY_AND_PREDICT
 
     if deploy:
-        continous_deployment_pipeline(data_path="./data/banglore_real_estate_data.csv",min_accuracy=min_accuracy, workers = 3, timeout = 60)
-    """ if predict:
-        inference_pipeline() """
+        continuous_deployment_pipeline(data_path="./data/banglore_real_estate_data.csv",min_accuracy=min_accuracy, workers = 3, timeout = 60)
+    if predict:
+        inference_pipeline(pipeline_name="continuous_deployment_pipeline",
+            pipeline_step_name="mlflow_model_deployer_step",) 
 
     print(
         "You can run:\n "
@@ -55,13 +57,12 @@ def run_deployment(config: str, min_accuracy: float):
 
     # fetch existing services with same pipeline name, step name and model name
     existing_services = mlflow_model_deployer_component.find_model_server(
-        pipeline_name="continuous_deployment_pipeline",
-        pipeline_step_name="mlflow_model_deployer_step",
-        model_name="model",
+        
     )
 
     if existing_services:
         service = cast(MLFlowDeploymentService, existing_services[0])
+        service.start(timeout=60)
         if service.is_running:
             print(
                 f"The MLflow prediction server is running locally as a daemon "
